@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AI Cat Image Generator
 
-## Getting Started
+A Next.js application that uses AI to transform natural language requests into cat images using the CATAAS (Cat as a Service) API. The application leverages LLM-powered tool calling to interpret user requests and convert them into appropriate API parameters.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Natural language processing for cat image requests
+- Real-time image generation based on user prompts
+- Support for filters (blur, mono, negate)
+- Text overlay capabilities with customizable colors
+- Image downloading functionality
+- Responsive design with mobile support
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How It Works
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The application uses a Language Model to interpret user requests and transform them into specific API parameters. For example:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- "Show me a happy orange cat" → Retrieves images with tags: ["happy", "orange"]
+- "Angry cat saying Hello in red text" → Adds text overlay with specified color
+- "Black and white sleeping cat" → Applies monochrome filter
 
-## Learn More
+## Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 14
+- React 18
+- TypeScript
+- TanStack Query
+- Tailwind CSS
+- shadcn/ui
+- LangChain
+- Groq LLM
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Integration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The project integrates with [CATAAS (Cat as a Service)](https://cataas.com), which provides the actual cat images. The AI component acts as an intelligent middleware that translates natural language into API parameters.
