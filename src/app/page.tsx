@@ -17,7 +17,7 @@ export default function Home() {
             >
               Cat as a Service (CATAAS)
             </a>
-            . While it doesn't generate images using AI, it intelligently
+            . While it doesn&apos;t generate images using AI, it intelligently
             matches your descriptions with existing cat photos using LLM-powered
             tool calling.
           </p>

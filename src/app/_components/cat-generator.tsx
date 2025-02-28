@@ -67,11 +67,11 @@ export function CatGenerator() {
         <div>
           <p className="font-medium mb-2">Example searches:</p>
           <ul className="list-disc list-inside space-y-1">
-            <li>"Orange cool cat"</li>
-            <li>"Angry cat with black and white image"</li>
-            <li>"Sleeping cat in blur style"</li>
-            <li>"Happy cat saying hello"</li>
-            <li>"Angry cat saying Turu DEK in yellow text"</li>
+            <li>&quot;Orange cool cat&quot;</li>
+            <li>&quot;Angry cat with black and white image&quot;</li>
+            <li>&quot;Sleeping cat in blur style&quot;</li>
+            <li>&quot;Happy cat saying hello&quot;</li>
+            <li>&quot;Angry cat saying Turu DEK in yellow text&quot;</li>
           </ul>
         </div>
         <div>
