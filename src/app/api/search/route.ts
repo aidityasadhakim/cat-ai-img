@@ -3,6 +3,11 @@ import { ToolNode } from "@langchain/langgraph/prebuilt";
 import { z } from "zod";
 import { tool } from "@langchain/core/tools";
 import { NextResponse } from "next/server";
+import {
+  AIMessage,
+  HumanMessage,
+  SystemMessage,
+} from "@langchain/core/messages";
 
 interface CustomFilter {
   brightness?: number;
@@ -138,21 +143,21 @@ const getCatImage = tool(
               brightness: z
                 .number()
                 .min(0)
-                .max(100)
+                .max(10)
                 .optional()
-                .describe("Adjust image brightness (0-100)"),
+                .describe("Adjust image brightness (0-10)"),
               lightness: z
                 .number()
                 .min(0)
-                .max(100)
+                .max(10)
                 .optional()
-                .describe("Adjust image lightness in HSL (0-100)"),
+                .describe("Adjust image lightness in HSL (0-10)"),
               saturation: z
                 .number()
                 .min(0)
-                .max(100)
+                .max(10)
                 .optional()
-                .describe("Adjust color saturation in HSL (0-100)"),
+                .describe("Adjust color saturation in HSL (0-10)"),
               hue: z
                 .number()
                 .min(0)
@@ -187,7 +192,8 @@ const getCatImage = tool(
           fontColor: z
             .string()
             .optional()
-            .describe("Color of the overlaid text (hex code or color name)"),
+            .default("yellow")
+            .describe("Color of the overlaid text only color name accepted"),
           width: z
             .number()
             .optional()
@@ -333,6 +339,8 @@ const COMMON_CAT_TAGS = [
   "adorable",
 ];
 
+const COMMON_COLORS = ["red", "blue", "green", "yellow", "purple", "orange"];
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -357,16 +365,88 @@ Tool call: { "tags": ["cute"], "preset": {} }
 
 User: "Show me a cat saying hello in red text"
 Assistant: I'll generate a cat image with "hello" text in red
-Tool call: { "text": "hello", "preset": { "fontColor": "#FF0000" } }
+Tool call: { "text": "hello", "preset": { "fontColor": "red" } }
 
 User: "Show me a black and white cat photo"
 Assistant: I'll generate a monochrome cat image
 Tool call: { "preset": { "filter": "mono" } }
 
-Now, please process this request: ${prompt}`;
+All the presets are ranging from 0 to 10
+
+Here's example of the colors you can use:
+${COMMON_COLORS.map((color) => `${color}`).join("\n")}
+`;
+
+    const messages = [
+      new SystemMessage(systemPrompt),
+      new HumanMessage("Orange Cool Cat"),
+      new AIMessage({
+        content: "",
+        tool_calls: [
+          {
+            id: "12345",
+            name: "getCatImage",
+            args: {
+              tags: ["cute", "orange"],
+            },
+          },
+        ],
+      }),
+      new HumanMessage("Angry cat with black and white image"),
+      new AIMessage({
+        content: "",
+        tool_calls: [
+          {
+            id: "12345",
+            name: "getCatImage",
+            args: {
+              tags: ["angry"],
+              preset: {
+                filter: "mono",
+              },
+            },
+          },
+        ],
+      }),
+      new HumanMessage("Sleeping cat saying TURU in white text"),
+      new AIMessage({
+        content: "",
+        tool_calls: [
+          {
+            id: "12345",
+            name: "getCatImage",
+            args: {
+              tags: ["sleeping"],
+              text: "TURU",
+              preset: {
+                fontColor: "white",
+              },
+            },
+          },
+        ],
+      }),
+      new HumanMessage("Happy cat saying hello with slightly bright image"),
+      new AIMessage({
+        content: "",
+        tool_calls: [
+          {
+            id: "12345",
+            name: "getCatImage",
+            args: {
+              tags: ["happy"],
+              text: "hello",
+              preset: {
+                brightness: 3,
+              },
+            },
+          },
+        ],
+      }),
+      new HumanMessage(prompt),
+    ];
 
     const response = await toolNode.invoke({
-      messages: [await model.invoke(systemPrompt)],
+      messages: [await model.invoke(messages)],
     });
     console.log(response);
     const parsedContent = JSON.parse(response.messages[0].content);

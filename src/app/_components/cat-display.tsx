@@ -36,14 +36,14 @@ export function CatDisplay({ response }: CatDisplayProps) {
   };
 
   return (
-    <Card className="w-full p-4 flex flex-col gap-4">
-      <div className="relative aspect-square">
+    <Card className="w-full max-w-md mx-auto p-4 flex flex-col gap-4">
+      <div className="relative aspect-square w-full max-w-md">
         <Image
           src={response.url}
           alt="Generated cat"
           fill
-          className="object-contain"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-contain rounded-md"
+          sizes="(max-width: 768px) 100vw, 384px"
         />
       </div>
       <Button

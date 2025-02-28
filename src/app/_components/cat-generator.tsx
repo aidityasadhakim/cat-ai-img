@@ -1,21 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { PromptInput } from "./prompt-input";
 import { CatDisplay } from "./cat-display";
 
+// Top 20 most common cat tags
+const COMMON_CAT_TAGS = [
+  "cute",
+  "black",
+  "white",
+  "orange",
+  "sleeping",
+  "kitten",
+  "funny",
+  "grumpy",
+  "happy",
+  "fluffy",
+  "tabby",
+  "maine coon",
+  "siamese",
+  "persian",
+  "bengal",
+  "playful",
+  "lazy",
+  "sleepy",
+  "blue eyes",
+  "green eyes",
+];
+
 export function CatGenerator() {
   const [prompt, setPrompt] = useState("");
   const [searchTrigger, setSearchTrigger] = useState(0);
-
-  const { data: tags } = useQuery({
-    queryKey: ["cat-tags"],
-    queryFn: async () => {
-      const response = await fetch("https://cataas.com/api/tags");
-      return response.json();
-    },
-  });
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const { data: catResponse, isLoading } = useQuery({
     queryKey: ["cat-generation", searchTrigger],
@@ -27,8 +44,18 @@ export function CatGenerator() {
       });
       return response.json();
     },
-    enabled: !!prompt && searchTrigger > 0,
+    enabled: searchTrigger > 0,
   });
+
+  // Scroll to result when loading finishes and we have a response
+  useEffect(() => {
+    if (!isLoading && catResponse && resultRef.current) {
+      resultRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  }, [isLoading, catResponse]);
 
   const handleSearch = () => {
     setSearchTrigger((prev) => prev + 1);
@@ -44,18 +71,20 @@ export function CatGenerator() {
             <li>"Angry cat with black and white image"</li>
             <li>"Sleeping cat in blur style"</li>
             <li>"Happy cat saying hello"</li>
+            <li>"Angry cat saying Turu DEK in yellow text"</li>
           </ul>
         </div>
         <div>
-          <p className="font-medium mb-2">Available tags:</p>
+          <p className="font-medium mb-2">Popular tags:</p>
           <p className="flex flex-wrap gap-2">
-            {tags?.slice(0, 15).map((tag: string) => (
+            {COMMON_CAT_TAGS.map((tag) => (
               <span key={tag} className="text-primary">
                 #{tag}
               </span>
             ))}
-            {tags?.length > 15 && <span>and {tags.length - 15} more...</span>}
           </p>
+
+          {COMMON_CAT_TAGS?.length > 15 && <span>and more...</span>}
         </div>
       </div>
       <PromptInput
@@ -64,7 +93,9 @@ export function CatGenerator() {
         onSearch={handleSearch}
         isLoading={isLoading}
       />
-      <CatDisplay response={catResponse} isLoading={isLoading} />
+      <div ref={resultRef}>
+        <CatDisplay response={catResponse} isLoading={isLoading} />
+      </div>
     </div>
   );
 }
