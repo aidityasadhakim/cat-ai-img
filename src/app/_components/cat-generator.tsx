@@ -45,6 +45,8 @@ export function CatGenerator() {
       return response.json();
     },
     enabled: searchTrigger > 0,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 60 * 24,
   });
 
   // Scroll to result when loading finishes and we have a response
@@ -62,11 +64,11 @@ export function CatGenerator() {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-2xl">
-      <div className="text-sm text-muted-foreground space-y-6">
+    <div className="flex flex-col gap-4 sm:gap-6 w-full max-w-2xl px-4 sm:px-0">
+      <div className="text-sm text-muted-foreground space-y-4 sm:space-y-6">
         <div>
-          <p className="font-medium mb-2">Example searches:</p>
-          <ul className="list-disc list-inside space-y-1">
+          <p className="font-medium mb-1.5 sm:mb-2">Example searches:</p>
+          <ul className="list-disc list-inside space-y-0.5 sm:space-y-1 text-xs sm:text-sm">
             <li>&quot;Orange cool cat&quot;</li>
             <li>&quot;Angry cat with black and white image&quot;</li>
             <li>&quot;Sleeping cat in blur style&quot;</li>
@@ -75,8 +77,8 @@ export function CatGenerator() {
           </ul>
         </div>
         <div>
-          <p className="font-medium mb-2">Popular tags:</p>
-          <p className="flex flex-wrap gap-2">
+          <p className="font-medium mb-1.5 sm:mb-2">Popular tags:</p>
+          <p className="flex flex-wrap gap-1.5 sm:gap-2 text-xs sm:text-sm">
             {COMMON_CAT_TAGS.map((tag) => (
               <span key={tag} className="text-primary">
                 #{tag}
@@ -84,7 +86,9 @@ export function CatGenerator() {
             ))}
           </p>
 
-          {COMMON_CAT_TAGS?.length > 15 && <span>and more...</span>}
+          {COMMON_CAT_TAGS?.length > 15 && (
+            <span className="text-xs sm:text-sm mt-1">and more...</span>
+          )}
         </div>
       </div>
       <PromptInput
