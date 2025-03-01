@@ -1,4 +1,4 @@
-# AI Cat Image Generator
+# AI Cat Image Finder
 
 A Next.js application that uses AI to transform natural language requests into cat images using the CATAAS (Cat as a Service) API. The application leverages LLM-powered tool calling to interpret user requests and convert them into appropriate API parameters.
 

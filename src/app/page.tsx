@@ -5,7 +5,7 @@ export default function Home() {
     <main className="container mx-auto min-h-screen py-8">
       <div className="flex flex-col items-center gap-8">
         <div className="text-center space-y-4">
-          <h1 className="text-4xl font-bold">AI Cat Image Generator</h1>
+          <h1 className="text-4xl font-bold">AI Cat Image Finder</h1>
           <p className="text-muted-foreground max-w-2xl">
             This project uses AI to understand your requests and find the
             perfect cat image from{" "}
